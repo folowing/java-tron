@@ -30,7 +30,10 @@ public class MoveAbiHelper {
     it.forEachRemaining(e -> {
       try {
         SmartContractNoABI contract = SmartContractNoABI.parseFrom(e.getValue());
-        abiStore.put(e.getKey(), contract.getAbi().toByteArray());
+        byte[] abi = contract.getAbi().toByteArray();
+        if (abi != null && abi.length != 0) {
+          abiStore.put(e.getKey(), abi);
+        }
       } catch (InvalidProtocolBufferException exception) {
         exception.printStackTrace();
       }
