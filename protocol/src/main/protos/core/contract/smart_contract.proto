@@ -7,6 +7,7 @@ option java_package = "org.tron.protos.contract"; //Specify the name of the pack
 option go_package = "github.com/tronprotocol/grpc-gateway/core";
 
 import "core/Tron.proto";
+import "google/protobuf/any.proto";
 
 message SmartContract {
   message ABI {
@@ -47,6 +48,19 @@ message SmartContract {
   bytes origin_address = 1;
   bytes contract_address = 2;
   ABI abi = 3;
+  bytes bytecode = 4;
+  int64 call_value = 5;
+  int64 consume_user_resource_percent = 6;
+  string name = 7;
+  int64 origin_energy_limit = 8;
+  bytes code_hash = 9;
+  bytes trx_hash = 10;
+}
+
+message SmartContractNoABI {
+  bytes origin_address = 1;
+  bytes contract_address = 2;
+  google.protobuf.Any abi = 3;
   bytes bytecode = 4;
   int64 call_value = 5;
   int64 consume_user_resource_percent = 6;

@@ -10,6 +10,9 @@ import org.tron.core.capsule.ContractCapsule;
 import org.tron.core.db.TronStoreWithRevoking;
 import org.tron.protos.contract.SmartContractOuterClass.SmartContract;
 
+import java.util.Iterator;
+import java.util.Map;
+
 @Slf4j(topic = "DB")
 @Component
 public class ContractStore extends TronStoreWithRevoking<ContractCapsule> {
@@ -36,6 +39,10 @@ public class ContractStore extends TronStoreWithRevoking<ContractCapsule> {
    */
   public byte[] findContractByHash(byte[] trxHash) {
     return revokingDB.getUnchecked(trxHash);
+  }
+
+  public Iterator<Map.Entry<byte[], byte[]>> getIterator() {
+    return revokingDB.iterator();
   }
 
   /**

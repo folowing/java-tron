@@ -22,6 +22,10 @@ public class AbiStore extends TronStoreWithRevoking<AbiCapsule> {
     return getUnchecked(key);
   }
 
+  public void put(byte[] key, byte[] value) {
+    revokingDB.put(key, value);
+  }
+
   public long getTotalABIs() {
     return Streams.stream(revokingDB.iterator()).count();
   }

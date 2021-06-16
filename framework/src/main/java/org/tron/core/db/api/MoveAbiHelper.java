@@ -3,12 +3,12 @@ package org.tron.core.db.api;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.google.protobuf.InvalidProtocolBufferException;
 import lombok.extern.slf4j.Slf4j;
 import org.tron.core.ChainBaseManager;
-import org.tron.core.capsule.AbiCapsule;
-import org.tron.core.capsule.ContractCapsule;
 import org.tron.core.store.AbiStore;
 import org.tron.core.store.ContractStore;
+import org.tron.protos.contract.SmartContractOuterClass.SmartContractNoABI;
 
 @Slf4j(topic = "DB")
 public class MoveAbiHelper {
@@ -26,13 +26,14 @@ public class MoveAbiHelper {
     logger.info("Start to move abi");
     AbiStore abiStore = chainBaseManager.getAbiStore();
     ContractStore contractStore = chainBaseManager.getContractStore();
-    Iterator<Map.Entry<byte[], ContractCapsule>> it = contractStore.iterator();
+    Iterator<Map.Entry<byte[], byte[]>> it = contractStore.getIterator();
     it.forEachRemaining(e -> {
-      ContractCapsule contractCapsule = e.getValue();
-      if (!abiStore.has(e.getKey())) {
-        abiStore.put(e.getKey(), new AbiCapsule(contractCapsule));
+      try {
+        SmartContractNoABI contract = SmartContractNoABI.parseFrom(e.getValue());
+        abiStore.put(e.getKey(), contract.getAbi().toByteArray());
+      } catch (InvalidProtocolBufferException exception) {
+        exception.printStackTrace();
       }
-      //contractStore.put(e.getKey(), contractCapsule);
       count += 1;
       if (count % 100_000 == 0) {
         logger.info("Doing the abi move, current contracts: {} {}", count,
