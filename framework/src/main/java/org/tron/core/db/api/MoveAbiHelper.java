@@ -43,11 +43,9 @@ public class MoveAbiHelper {
             System.currentTimeMillis());
       }
     });
-    chainBaseManager.getDynamicPropertiesStore().saveAbiMoveDone(1);
-    logger.info("Check store size: contract {} abi {}",
-        contractStore.getTotalContracts(), abiStore.getTotalABIs());
     logger.info(
         "Complete the abi move, total time:{} milliseconds",
         System.currentTimeMillis() - start);
+    chainBaseManager.getDynamicPropertiesStore().saveAbiMoveDone(1);
   }
 }
