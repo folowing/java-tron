@@ -23,25 +23,23 @@ public class MoveAbiHelper {
 
   public void doWork() {
     long start = System.currentTimeMillis();
-    logger.info("Start to move abi");
+    logger.info("Start to move abi back");
     AbiStore abiStore = chainBaseManager.getAbiStore();
     ContractStore contractStore = chainBaseManager.getContractStore();
-    Iterator<Map.Entry<byte[], ContractCapsule>> it = contractStore.iterator();
-    it.forEachRemaining(e -> {
-      ContractCapsule contractCapsule = e.getValue();
-      if (!contractCapsule.getInstance().getAbi().getEntrysList().isEmpty()) {
-        abiStore.put(e.getKey(), contractCapsule.getInstance().getAbi().toByteArray());
-      }
-      contractStore.put(e.getKey(), contractCapsule);
+    abiStore.iterator().forEachRemaining(e -> {
+      AbiCapsule abiCapsule = e.getValue();
+      ContractCapsule contractCapsule = contractStore.get(e.getKey());
+      contractStore.put(e.getKey(), new ContractCapsule(
+          contractCapsule.getInstance().toBuilder().setAbi(abiCapsule.getInstance()).build()));
       count += 1;
       if (count % 100_000 == 0) {
-        logger.info("Doing the abi move, current count: {} {}", count,
+        logger.info("Doing the abi move back, current count: {} {}", count,
             System.currentTimeMillis());
       }
     });
-    chainBaseManager.getDynamicPropertiesStore().saveAbiMoveDone(1);
+    chainBaseManager.getDynamicPropertiesStore().saveAbiMoveDone(0);
     logger.info(
-        "Complete the abi move, total time: {} milliseconds, total count: {}",
+        "Complete the abi move back, total time: {} milliseconds, total count: {}",
         System.currentTimeMillis() - start, count);
   }
 }

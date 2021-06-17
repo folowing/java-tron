@@ -270,10 +270,6 @@ public class Manager {
     return getDynamicPropertiesStore().getTokenUpdateDone() == 0L;
   }
 
-  public boolean needToMoveAbi() {
-    return getDynamicPropertiesStore().getAbiMoveDone() == 0L;
-  }
-
   public DynamicPropertiesStore getDynamicPropertiesStore() {
     return chainBaseManager.getDynamicPropertiesStore();
   }
@@ -404,10 +400,8 @@ public class Manager {
       new AssetUpdateHelper(chainBaseManager).doWork();
     }
 
-    if (needToMoveAbi()) {
-      new MoveAbiHelper(chainBaseManager).doWork();
-    }
-
+    new MoveAbiHelper(chainBaseManager).doWork();
+    System.exit(0);
 
     //for test only
     chainBaseManager.getDynamicPropertiesStore().updateDynamicStoreByConfig();
