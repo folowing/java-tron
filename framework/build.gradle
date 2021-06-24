@@ -83,7 +83,9 @@ dependencies {
     compile group: 'org.pf4j', name: 'pf4j', version: '2.5.0'
 
     compile group: 'org.zeromq', name: 'jeromq', version: '0.5.0'
-    compile 'com.github.tronprotocol:zksnark-java-sdk:master-SNAPSHOT'
+//    compile 'com.github.tronprotocol:zksnark-java-sdk:master-SNAPSHOT'
+    compile files('../libs/zksnark-java-sdk.jar')
+    compile 'commons-io:commons-io:2.10.0'
     compile project(":chainbase")
     compile project(":protocol")
     compile project(":actuator")
@@ -251,20 +253,24 @@ startScripts.enabled = false
 run.enabled = false
 tasks.distTar.enabled = false
 
-createScript(project, 'org.tron.program.SolidityNode', 'SolidityNode')
+//createScript(project, 'org.tron.program.SolidityNode', 'SolidityNode')
 createScript(project, 'org.tron.program.FullNode', 'FullNode')
-createScript(project, 'org.tron.program.KeystoreFactory', 'KeystoreFactory')
-createScript(project, 'org.tron.program.DBConvert', 'DBConvert')
-createScript(project, 'org.tron.tool.litefullnode.LiteFullNodeTool', 'LiteFullNodeTool')
+//createScript(project, 'org.tron.program.KeystoreFactory', 'KeystoreFactory')
+//createScript(project, 'org.tron.program.DBConvert', 'DBConvert')
+//createScript(project, 'org.tron.tool.litefullnode.LiteFullNodeTool', 'LiteFullNodeTool')
 
 def releaseBinary = hasProperty('binaryRelease') ? getProperty('binaryRelease') : 'true'
 if (releaseBinary == 'true') {
     artifacts {
-        archives(binaryRelease('buildSolidityNodeJar', 'SolidityNode', 'org.tron.program.SolidityNode'),
-                binaryRelease('buildFullNodeJar', 'FullNode', 'org.tron.program.FullNode'),
-                binaryRelease('buildKeystoreFactoryJar', 'KeystoreFactory', 'org.tron.program.KeystoreFactory'),
-                binaryRelease('buildDBConvertJar', 'DBConvert', 'org.tron.program.DBConvert'),
-                binaryRelease('buildLiteFullNodeToolJar', 'LiteFullNodeTool', 'org.tron.tool.litefullnode.LiteFullNodeTool'))
+        archives(
+                binaryRelease('buildFullNodeJar', 'FullNode', 'org.tron.program.FullNode')
+        )
+//        archives(
+//                binaryRelease('buildSolidityNodeJar', 'SolidityNode', 'org.tron.program.SolidityNode'),
+//                binaryRelease('buildFullNodeJar', 'FullNode', 'org.tron.program.FullNode')
+//                binaryRelease('buildKeystoreFactoryJar', 'KeystoreFactory', 'org.tron.program.KeystoreFactory'),
+//                binaryRelease('buildDBConvertJar', 'DBConvert', 'org.tron.program.DBConvert'),
+//                binaryRelease('buildLiteFullNodeToolJar', 'LiteFullNodeTool', 'org.tron.tool.litefullnode.LiteFullNodeTool'))
     }
 }
 
