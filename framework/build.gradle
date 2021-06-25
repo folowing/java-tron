@@ -137,7 +137,6 @@ test {
         exceptionFormat = 'full'
     }
     jacoco {
-        append = true
         destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
         classDumpDir = file("$buildDir/jacoco/classpathdumps")
     }
@@ -166,11 +165,11 @@ task stest(type: Test) {
         showStackTraces = "true"
     }
 
-    jacoco {
-        append = false
-        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        classDumpDir = file("$buildDir/jacoco/classpathdumps")
-    }
+//    jacoco {
+//        append = false
+//        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+//        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+//    }
 }
 
 task dailyBuild(type: Test) {
@@ -188,7 +187,8 @@ jacocoTestReport {
         csv.enabled false
         html.destination file("${buildDir}/jacocoHtml")
     }
-    executionData = files('build/jacoco/jacocoTest.exec')
+//    executionData = files('build/jacoco/jacocoTest.exec')
+    getExecutionData().setFrom(files('../build/jacoco/jacocoTest.exec'))
 }
 
 def binaryRelease(taskName, jarName, mainClass) {
