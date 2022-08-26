@@ -16,7 +16,8 @@ dependencies {
     testImplementation "org.testng:testng:$testNgVersion"
     compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
     compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.69'
-    compile 'com.github.tronprotocol:zksnark-java-sdk:master-SNAPSHOT'
+    // compile 'com.github.tronprotocol:zksnark-java-sdk:master-SNAPSHOT'
+    compile files('../libs/zksnark-java-sdk.jar')
     compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
 }
 
@@ -67,11 +68,19 @@ jacocoTestReport {
         xml.enabled = true
         html.enabled = true
     }
-    executionData.from = '../framework/build/jacoco/jacocoTest.exec'
+//    executionData.from = '../framework/build/jacoco/jacocoTest.exec'
+//    afterEvaluate {
+//        classDirectories.from = classDirectories.files.collect {
+//            fileTree(dir: it,)
+//        }
+//    }
+    getExecutionData().setFrom(files('../framework/build/jacoco/jacocoTest.exec'))
     afterEvaluate {
-        classDirectories.from = classDirectories.files.collect {
-            fileTree(dir: it,)
-        }
+        getClassDirectories().setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it,)
+                })
+        )
     }
 }
 

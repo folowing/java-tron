@@ -44,7 +44,8 @@ dependencies {
     compile group: 'com.beust', name: 'jcommander', version: '1.72'
     compile group: 'com.typesafe', name: 'config', version: '1.3.2'
     compile group: leveldbGroup, name: leveldbName, version: leveldbVersion
-    compile group: 'org.rocksdb', name: 'rocksdbjni', version: '5.15.10'
+    // compile group: 'org.rocksdb', name: 'rocksdbjni', version: '5.15.10'
+    compile files('../libs/rocksdbjni-6.20.3-osx.jar')
     // https://mvnrepository.com/artifact/org.quartz-scheduler/quartz
     compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.2'
     compile group: 'io.prometheus', name: 'simpleclient', version: '0.15.0'
@@ -61,10 +62,18 @@ jacocoTestReport {
         xml.enabled = true
         html.enabled = true
     }
-    executionData.from = '../framework/build/jacoco/jacocoTest.exec'
+//    executionData.from = '../framework/build/jacoco/jacocoTest.exec'
+//    afterEvaluate {
+//        classDirectories.from = classDirectories.files.collect {
+//            fileTree(dir: it,)
+//        }
+//    }
+    getExecutionData().setFrom(files('../framework/build/jacoco/jacocoTest.exec'))
     afterEvaluate {
-        classDirectories.from = classDirectories.files.collect {
-            fileTree(dir: it,)
-        }
+        getClassDirectories().setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it,)
+                })
+        )
     }
 }
