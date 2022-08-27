@@ -5,6 +5,7 @@ import static org.tron.common.utils.ByteUtil.longTo32Bytes;
 import java.util.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.util.encoders.Hex;
+import org.junit.After;
 import org.junit.Test;
 import org.testng.Assert;
 import org.tron.common.runtime.TVMTestResult;
@@ -105,5 +106,10 @@ public class AllowTvmLondonTest extends VMTestBase {
         null);
     runtime = TvmTestUtils.processTransactionAndReturnRuntime(trx, rootRepository, null);
     Assert.assertNotNull(runtime.getRuntimeError());
+  }
+
+  @After
+  public void clean() {
+    ConfigLoader.disable = false;
   }
 }

@@ -25,18 +25,18 @@ configurations.getByName('checkstyleConfig') {
 
 dependencies {
     //local libraries
-    compile fileTree(dir: 'libs', include: '*.jar')
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.13.0'
-    testCompile group: 'org.hamcrest', name: 'hamcrest-junit', version: '1.0.0.1'
-    testCompile group: 'org.testng', name: 'testng', version: '6.14.3'
-    compile group: 'info.picocli', name: 'picocli', version: '4.6.3'
-    compile group: 'com.typesafe', name: 'config', version: '1.3.2'
-    compile group: 'me.tongfei', name: 'progressbar', version: '0.9.3'
+    // implementation fileTree(dir: 'libs', include: '*.jar')
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.13.0'
+    testImplementation group: 'org.hamcrest', name: 'hamcrest-junit', version: '1.0.0.1'
+    testImplementation group: 'org.testng', name: 'testng', version: '6.14.3'
+    implementation group: 'info.picocli', name: 'picocli', version: '4.6.3'
+    implementation group: 'com.typesafe', name: 'config', version: '1.3.2'
+    implementation group: 'me.tongfei', name: 'progressbar', version: '0.9.3'
 
 
-    compile 'com.github.halibobo1205.leveldb-java:leveldb:v0.12.5'
-    compile 'com.github.halibobo1205.leveldb-java:leveldb-api:v0.12.5'
+    implementation 'com.github.halibobo1205.leveldb-java:leveldb:v0.12.5'
+    implementation 'com.github.halibobo1205.leveldb-java:leveldb-api:v0.12.5'
 }
 
 check.dependsOn 'lint'
@@ -99,7 +99,7 @@ def binaryRelease(taskName, jarName, mainClass) {
         }
 
         from {
-            configurations.compile.collect {
+            configurations.runtimeClasspath.collect {
                 it.isDirectory() ? it : zipTree(it)
             }
         }
@@ -107,6 +107,7 @@ def binaryRelease(taskName, jarName, mainClass) {
         manifest {
             attributes "Main-Class": "${mainClass}"
         }
+        duplicatesStrategy = 'include'
     }
 }
 
@@ -115,7 +116,7 @@ def createScript(project, mainClass, name) {
         outputDir = new File(project.buildDir, 'scripts')
         mainClassName = mainClass
         applicationName = name
-        classpath = project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + project.configurations.runtime
+        classpath = project.tasks[JavaPlugin.JAR_TASK_NAME].outputs.files + project.configurations.runtimeClasspath
     }
     project.tasks[name].dependsOn(project.jar)
     project.applicationDistribution.with {
@@ -128,8 +129,8 @@ def createScript(project, mainClass, name) {
 applicationDistribution.from("../gradle/java-tron.vmoptions") {
     into "bin"
 }
-createScript(project, 'org.tron.plugins.ArchiveManifest', 'ArchiveManifest')
-createScript(project, 'org.tron.plugins.Toolkit', 'Toolkit')
+//createScript(project, 'org.tron.plugins.ArchiveManifest', 'ArchiveManifest')
+//createScript(project, 'org.tron.plugins.Toolkit', 'Toolkit')
 
 def releaseBinary = hasProperty('binaryRelease') ? getProperty('binaryRelease') : 'true'
 if (releaseBinary == 'true') {

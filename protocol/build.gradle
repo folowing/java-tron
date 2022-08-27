@@ -5,18 +5,18 @@ def protobufVersion = "3.19.2"
 def grpcVersion = "1.14.0"
 
 dependencies {
-    compile group: 'com.google.protobuf', name: 'protobuf-java', version: protobufVersion
-    compile group: 'com.google.protobuf', name: 'protobuf-java-util', version: protobufVersion
-    compile group: 'net.jcip', name: 'jcip-annotations', version: '1.0'
+    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: protobufVersion
+    implementation group: 'com.google.protobuf', name: 'protobuf-java-util', version: protobufVersion
+    implementation group: 'net.jcip', name: 'jcip-annotations', version: '1.0'
 
 //    checkstyleConfig "com.puppycrawl.tools:checkstyle:${versions.checkstyle}"
     // google grpc
-    compile group: 'io.grpc', name: 'grpc-netty', version: grpcVersion
-    compile group: 'io.grpc', name: 'grpc-protobuf', version: grpcVersion
-    compile group: 'io.grpc', name: 'grpc-stub', version: grpcVersion
+    implementation group: 'io.grpc', name: 'grpc-netty', version: grpcVersion
+    implementation group: 'io.grpc', name: 'grpc-protobuf', version: grpcVersion
+    implementation group: 'io.grpc', name: 'grpc-stub', version: grpcVersion
     // end google grpc
 
-    compile group: 'com.google.api.grpc', name: 'googleapis-common-protos', version: '0.0.3'
+    implementation group: 'com.google.api.grpc', name: 'googleapis-common-protos', version: '0.0.3'
 }
 
 tasks.matching { it instanceof Test }.all {
@@ -29,7 +29,7 @@ sourceSets {
             srcDir 'src/main/protos'
         }
         java {
-            srcDir 'src/main/gen'
+//            srcDir 'src/main/gen'
             srcDir 'src/main/java'
         }
     }

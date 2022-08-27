@@ -9,16 +9,19 @@ def slf4jVersion = "1.7.25"
 // --------------------------------------
 
 dependencies {
-    compile project(":chainbase")
-    compile project(":protocol")
+    implementation project(":chainbase")
+    implementation project(":protocol")
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "org.testng:testng:$testNgVersion"
-    compile "org.slf4j:jcl-over-slf4j:$slf4jVersion"
-    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.69'
-    // compile 'com.github.tronprotocol:zksnark-java-sdk:master-SNAPSHOT'
-    compile files('../libs/zksnark-java-sdk.jar')
-    compile group: 'commons-codec', name: 'commons-codec', version: '1.11'
+    implementation "org.slf4j:jcl-over-slf4j:$slf4jVersion"
+    implementation group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.69'
+    // implementation 'com.github.tronprotocol:zksnark-java-sdk:master-SNAPSHOT'
+    implementation files('../libs/zksnark-java-sdk.jar')
+    implementation group: 'commons-codec', name: 'commons-codec', version: '1.11'
+    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.19.2'
+    implementation project(":common")
+    implementation project(":crypto")
 }
 
 test {
